@@ -1,0 +1,96 @@
+<Window x:Class="ShutdownScheduler.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Shutdown Scheduler" Height="640" Width="460"
+        Icon="assets/icon.ico"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent">
+
+    <Border CornerRadius="18" Background="{StaticResource Bg}" BorderBrush="{StaticResource Stroke}" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- ===== Title bar ===== -->
+            <Grid Grid.Row="0" Height="46" MouseLeftButtonDown="TitleBar_MouseDown">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="18,0">
+                    <TextBlock Text="&#x23FB;" FontSize="16" Foreground="{StaticResource Accent}" VerticalAlignment="Center"/>
+                    <TextBlock Text="Shutdown Scheduler" Margin="10,0,0,0" FontSize="13"
+                               FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0">
+                    <Button Content="&#x2013;" Click="Minimize_Click" Width="34" Height="30"
+                            Background="Transparent" BorderThickness="0" Foreground="{StaticResource TextMuted}"
+                            FontSize="16" Cursor="Hand"/>
+                    <Button Content="&#x2715;" Click="Close_Click" Width="34" Height="30"
+                            Background="Transparent" BorderThickness="0" Foreground="{StaticResource TextMuted}"
+                            FontSize="13" Cursor="Hand"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- ===== Body ===== -->
+            <StackPanel Grid.Row="1" Margin="24,4,24,24">
+
+                <!-- Action mode selector -->
+                <TextBlock Text="İŞLEM" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextMuted}" Margin="2,0,0,8"/>
+                <UniformGrid Columns="2" Rows="2">
+                    <Button x:Name="BtnShutdown" Content="&#x23FB;  Kapat" Style="{StaticResource ChipButton}"
+                            Margin="0,0,5,5" Click="Mode_Click" Tag="shutdown"/>
+                    <Button x:Name="BtnRestart" Content="&#x21BB;  Yeniden Başlat" Style="{StaticResource ChipButton}"
+                            Margin="5,0,0,5" Click="Mode_Click" Tag="restart"/>
+                    <Button x:Name="BtnSleep" Content="&#x1F319;  Uyku" Style="{StaticResource ChipButton}"
+                            Margin="0,5,5,0" Click="Mode_Click" Tag="sleep"/>
+                    <Button x:Name="BtnLogoff" Content="&#x21AA;  Oturumu Kapat" Style="{StaticResource ChipButton}"
+                            Margin="5,5,0,0" Click="Mode_Click" Tag="logoff"/>
+                </UniformGrid>
+
+                <!-- Timer card -->
+                <Border Background="{StaticResource Card}" CornerRadius="16" Padding="20" Margin="0,20,0,0">
+                    <StackPanel>
+                        <TextBlock Text="SÜRE (DAKİKA)" FontSize="11" FontWeight="Bold"
+                                   Foreground="{StaticResource TextMuted}" Margin="2,0,0,10"/>
+
+                        <TextBox x:Name="MinutesBox" Text="30" MaxLength="4"
+                                 PreviewTextInput="Minutes_PreviewTextInput" Height="64"/>
+
+                        <!-- Quick presets -->
+                        <UniformGrid Columns="4" Margin="0,12,0,0">
+                            <Button Content="5" Style="{StaticResource PillButton}" Margin="0,0,4,0" Click="Preset_Click" Tag="5"/>
+                            <Button Content="15" Style="{StaticResource PillButton}" Margin="4,0,4,0" Click="Preset_Click" Tag="15"/>
+                            <Button Content="30" Style="{StaticResource PillButton}" Margin="4,0,4,0" Click="Preset_Click" Tag="30"/>
+                            <Button Content="60" Style="{StaticResource PillButton}" Margin="4,0,0,0" Click="Preset_Click" Tag="60"/>
+                        </UniformGrid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Countdown -->
+                <Border Background="{StaticResource Card}" CornerRadius="16" Padding="20,16" Margin="0,14,0,0">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock x:Name="CountdownText" Text="Zamanlama yok" FontSize="34"
+                                   FontWeight="Bold" Foreground="{StaticResource TextPrimary}"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock x:Name="StatusText" Text="Bir işlem ve süre seçin" FontSize="13"
+                                   Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Action buttons -->
+                <Grid Margin="0,18,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="StartBtn" Grid.Column="0" Content="Başlat" Style="{StaticResource AccentButton}"
+                            Height="52" Click="Start_Click"/>
+                    <Button x:Name="CancelBtn" Grid.Column="2" Content="İptal Et" Style="{StaticResource DangerButton}"
+                            Height="52" Click="Cancel_Click" IsEnabled="False"/>
+                </Grid>
+
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>
